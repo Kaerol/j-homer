@@ -1,0 +1,66 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+    <!-- @formatter:off -->
+
+    <changeSet author="kaerol" id="initial-tables">
+        <sql>
+            CREATE TABLE `device` (
+                `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                `idx` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `home_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `creation_date` datetime DEFAULT NULL,
+                `modification_date` datetime DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+            CREATE TABLE `event` (
+                `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                `device_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `idx` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `last_update` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `creation_date` datetime DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `event_to_device` (`device_id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+            CREATE TABLE `home` (
+                `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `street` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+            CREATE TABLE `role` (
+                `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                `role` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+            CREATE TABLE `user` (
+                `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                `home_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `login` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `role_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                `register_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `user_to_role` (`role_id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        </sql>
+    </changeSet>
+
+    <!-- @formatter:on -->
+</databaseChangeLog>
