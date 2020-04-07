@@ -14,10 +14,9 @@ import java.util.UUID;
 class GetEventResponse {
 
     private final UUID id;
-    private GetDeviceResponse device;
-    private String idx;
-    private String lastUpdate;
-    private String description;
-    private String value;
+    private final GetDeviceResponse device;
+    private final String description;
+    private final String value;
+    private final String lastUpdate;
     private final ZonedDateTime creationDate;
 }

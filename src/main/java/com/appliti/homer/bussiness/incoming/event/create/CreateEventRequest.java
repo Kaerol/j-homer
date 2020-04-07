@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 class CreateEventRequest {
 
-    @ApiModelProperty(notes = "Device idx", example = "idx")
+    @ApiModelProperty(notes = "Device idx", example = "4")
     private String idx;
 
-    @ApiModelProperty(notes = "Event description", example = "description")
+    @ApiModelProperty(notes = "Event description", example = "Czujka salon")
     private String description;
 
-    @ApiModelProperty(notes = "Event value", example = "value")
+    @ApiModelProperty(notes = "Event value", example = "On")
     private String value;
 
-    @ApiModelProperty(notes = "Event subject", example = "lastupdate")
+    @ApiModelProperty(notes = "Event subject", example = "2020-03-25 22:48:25")
     private String lastUpdate;
 }

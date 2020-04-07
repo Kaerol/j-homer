@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface ReadOnlyRepository<T, UUID extends Serializable> extends Repository<T, java.util.UUID> {
+public interface ReadOnlyRepository<T, UUID extends Serializable> extends Repository<T, UUID> {
 
     Optional<T> findById(UUID uuid);
     List<T> findAll();

@@ -3,17 +3,30 @@ package com.appliti.homer.bussiness.incoming.event.list;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.ZonedDateTime;
+
+@Setter
 @Getter
 @NoArgsConstructor
 class GetEventFilterRequest {
 
-    @ApiModelProperty(notes = "Event subject", example = "subject")
-    private String subject;
+    @ApiModelProperty(notes = "Device index", example = "1")
+    private String deviceIdx;
 
-    @ApiModelProperty(notes = "Event message", example = "message")
-    private String message;
+    @ApiModelProperty(notes = "Device name", example = "Kitchen sensor")
+    private String deviceName;
 
-    @ApiModelProperty(notes = "Event priority", example = "priority")
-    private String priority;
+    @ApiModelProperty(notes = "Event description", example = "subject")
+    private String description;
+
+    @ApiModelProperty(notes = "Event value", example = "On")
+    private String value;
+
+    @ApiModelProperty(notes = "Event creation date after", example = "2020-01-01T00:00:00:000")
+    private ZonedDateTime creationDateAfter;
+
+    @ApiModelProperty(notes = "Event creation date before", example = "2020-01-31T23:59:59:999")
+    private ZonedDateTime creationDateBefore;
 }

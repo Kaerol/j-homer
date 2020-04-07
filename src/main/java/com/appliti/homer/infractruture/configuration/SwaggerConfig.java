@@ -31,9 +31,11 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @EnableSwagger2
@@ -121,7 +123,10 @@ class SwaggerConfig {
     @Bean
     Docket cardsSwaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(cardsManagerApiInfo())
-                                                      .directModelSubstitute(ZonedDateTime.class, Date.class)
+                                                      .directModelSubstitute(LocalDateTime.class, String.class)
+                                                      .directModelSubstitute(LocalDate.class, String.class)
+                                                      .directModelSubstitute(LocalTime.class, String.class)
+                                                      .directModelSubstitute(ZonedDateTime.class, String.class)
                                                       .globalResponseMessage(RequestMethod.POST,
                                                                              globalResponsePostMessages())
                                                       .globalResponseMessage(RequestMethod.GET,

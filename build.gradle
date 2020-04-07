@@ -1,8 +1,18 @@
+buildscript {
+    ext {
+        directoryForGenerated = 'src/main/generated'
+        queryDslVersion = '4.3.1'
+        lombokVersion = '1.18.10'
+    }
+
+}
 plugins {
     id 'java'
+    id 'idea'
     id 'org.springframework.boot' version '2.2.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id "io.freefair.lombok" version "5.0.0-rc6"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'io.franzbecker.gradle-lombok' version '1.7'
 }
 
 group = 'com.appliti'
@@ -11,6 +21,29 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+}
+
+idea {
+    module {
+        sourceDirs += file("${directoryForGenerated}")
+    }
+}
+
+querydsl {
+    querydslSourcesDir = file("${directoryForGenerated}")
+    jpa = true
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+project.afterEvaluate {
+    project.tasks.compileQuerydsl.options.compilerArgs = [
+            "-proc:only",
+            "-processor", project.querydsl.processors() +
+                    ',lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+    ]
 }
 
 dependencies {
@@ -24,10 +57,20 @@ dependencies {
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
 
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: "${queryDslVersion}"
+    compile group: 'com.querydsl', name: 'querydsl-core', version: "${queryDslVersion}"
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: "${queryDslVersion}"
+
+    annotationProcessor group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '1.3.4'
+    annotationProcessor group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '2.2.2'
+    annotationProcessor group: 'jakarta.transaction', name: 'jakarta.transaction-api', version: '1.3.2'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+
     compile group: 'com.thetransactioncompany', name: 'cors-filter', version: '2.9'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.3'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.3'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.10.3'
 
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
