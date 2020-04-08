@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
@@ -31,8 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(new AntPathRequestMatcher("/users/login"),
                                                                            new AntPathRequestMatcher("/users/register"),
-                                                                           new AntPathRequestMatcher("/homes"),
-                                                                           new AntPathRequestMatcher("/events"));
+                                                                           new AntPathRequestMatcher("/homes"));
     private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
 
     private final UserSecurityService userDetailsService;
@@ -74,6 +75,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(final WebSecurity web) {
         web.ignoring()
            .requestMatchers(PUBLIC_URLS)
+           .and()
+           .ignoring()
+           .regexMatchers(HttpMethod.POST, "/events")
            .antMatchers("/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
@@ -88,8 +92,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .exceptionHandling()
-            // this entry point handles when you request a protected page and you are not yet
-            // authenticated
             .defaultAuthenticationEntryPointFor(forbiddenEntryPoint(), PROTECTED_URLS)
             .and()
             .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
@@ -97,13 +99,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .requestMatchers(PROTECTED_URLS)
             .authenticated()
             .and()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.GET, "/events")
+            .hasAnyRole()
+            .and()
+            .requestCache()
+            .requestCache(new NullRequestCache())
+            .and()
+            .cors()
+            .and()
             .csrf()
-            .disable()
-            .formLogin()
-            .disable()
-            .httpBasic()
-            .disable()
-            .logout()
             .disable();
     }
 

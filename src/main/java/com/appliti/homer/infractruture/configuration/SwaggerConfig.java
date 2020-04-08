@@ -31,11 +31,10 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @EnableSwagger2
@@ -107,6 +106,7 @@ class SwaggerConfig {
 
     private static List<ResponseMessage> getResponseMessages(final List<ResponseMessage> responseMessages) {
         responseMessages.add(getResponseMessage(HttpStatus.BAD_REQUEST));
+        responseMessages.add(getResponseMessage(HttpStatus.UNAUTHORIZED));
         responseMessages.add(getResponseMessage(HttpStatus.METHOD_NOT_ALLOWED));
         responseMessages.add(getResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR));
         responseMessages.add(getResponseMessage(HttpStatus.SERVICE_UNAVAILABLE));
@@ -123,10 +123,8 @@ class SwaggerConfig {
     @Bean
     Docket cardsSwaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(cardsManagerApiInfo())
-                                                      .directModelSubstitute(LocalDateTime.class, String.class)
-                                                      .directModelSubstitute(LocalDate.class, String.class)
-                                                      .directModelSubstitute(LocalTime.class, String.class)
-                                                      .directModelSubstitute(ZonedDateTime.class, String.class)
+                                                      .directModelSubstitute(OffsetDateTime.class, Date.class)
+                                                      .directModelSubstitute(ZonedDateTime.class, Date.class)
                                                       .globalResponseMessage(RequestMethod.POST,
                                                                              globalResponsePostMessages())
                                                       .globalResponseMessage(RequestMethod.GET,

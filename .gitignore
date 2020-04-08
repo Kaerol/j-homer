@@ -16,5 +16,5 @@
 # folders
 .gradle
 .idea
-build
-src/main/generated/*
+/build
+/src/main/generated
