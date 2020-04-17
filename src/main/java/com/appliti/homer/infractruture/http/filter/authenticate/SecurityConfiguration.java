@@ -32,6 +32,7 @@ import com.appliti.homer.bussiness.shared.HashingConverter;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(new AntPathRequestMatcher("/users/login"),
+                                                                           new AntPathRequestMatcher("/users/logout"),
                                                                            new AntPathRequestMatcher("/users/register"),
                                                                            new AntPathRequestMatcher("/homes"));
     private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);

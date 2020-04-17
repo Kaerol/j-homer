@@ -10,4 +10,5 @@ import java.util.UUID;
 interface UserLogoutRepository extends JpaRepository<UserLogoutEntity, UUID> {
 
     Optional<UserLogoutEntity> findByToken(UUID authorization);
+    Optional<UserLogoutEntity> findByLogin(String login);
 }
