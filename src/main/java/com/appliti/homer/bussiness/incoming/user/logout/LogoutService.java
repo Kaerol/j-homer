@@ -5,20 +5,28 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class LogoutService {
+class LogoutService implements LogoutFacade {
 
     private final UserLogoutRepository repository;
 
-    void logout(final String authorization) {
-        final UserLogoutEntity userEntity = repository.findByToken(UUID.fromString(authorization))
-                                                      .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        userEntity.logout();
+    @Override
+    public void logout(final String authorization) {
+        repository.findByToken(UUID.fromString(authorization))
+                  .ifPresent(u -> logoutUser(u));
+    }
 
+    @Override
+    public void logoutByLogin(final String login) {
+        repository.findByLogin(login)
+                  .ifPresent(u -> logoutUser(u));
+    }
+
+    private void logoutUser(final UserLogoutEntity userEntity) {
+        userEntity.logout();
         repository.save(userEntity);
     }
 }
