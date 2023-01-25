@@ -48,6 +48,7 @@ class DeviceEntity {
     DeviceResponse toDeviceResponse() {
         return DeviceResponse.builder()
                              .id(id)
+                             .idx(idx)
                              .name(name)
                              .description(description)
                              .homeId(homeId)

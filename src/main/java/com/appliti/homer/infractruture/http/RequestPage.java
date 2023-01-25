@@ -22,7 +22,13 @@ public class RequestPage {
         if (StringUtils.isEmpty(sortBy)) {
             return PageRequest.of(pageNo, pageSize);
         } else {
-            return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+            final String[] sort = sortBy.split(";");
+            Sort.Direction direction = Sort.Direction.ASC;
+            if (sort.length > 1) {
+                direction = Sort.Direction.fromString(sort[1]);
+            }
+
+            return PageRequest.of(pageNo, pageSize, Sort.by(direction, sort[0]));
         }
     }
 }
