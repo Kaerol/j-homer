@@ -26,6 +26,9 @@ class UserLogoutEntity {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @Column(updatable = false)
+    private String login;
+
     @Column
     @Type(type = "uuid-char")
     private UUID token;

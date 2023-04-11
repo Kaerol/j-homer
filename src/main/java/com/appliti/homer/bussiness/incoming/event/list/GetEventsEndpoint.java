@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.appliti.homer.infractruture.http.RequestPage;
+import com.appliti.homer.infractruture.http.ResponsePage;
 
 @Api(tags = "events")
 @RestController
@@ -23,7 +24,8 @@ class GetEventsEndpoint {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
-    List<GetEventResponse> getEvents(@ModelAttribute final GetEventFilterRequest eventFilter) {
-        return getEventsService.getEvents(eventFilter);
+    ResponsePage<GetEventResponse> getEvents(@ModelAttribute final GetEventFilterRequest eventFilter,
+                                             @ModelAttribute final RequestPage requestPage) {
+        return getEventsService.getEvents(eventFilter, requestPage.toPageable());
     }
 }

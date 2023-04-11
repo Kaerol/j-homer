@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "users")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 class LogoutEndpoint {
 
-    private final LogoutService logoutService;
+    private final LogoutFacade logoutFacade;
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "users/logout")
     void logout(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authorization) {
-        logoutService.logout(authorization);
+        logoutFacade.logout(authorization);
     }
 }
